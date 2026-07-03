@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Madzik - Sklep</title>
+  <style>
+    :root {
+      --accent-1: #bf9530;
+      --accent-2: #fcf6ba;
+      --accent-3: #b38728;
+      --accent-4: #fbf5b7;
+      --accent-5: #aa771c;
+      --bg: #1a1a1a;
+      --bg-card: #222;
+      --bg-elevated: #1e1e1e;
+      --bg-footer: #161616;
+      --border: #333;
+      --border-row: #2c2c2c;
+      --border-footer: #242424;
+      --text: #fff;
+      --text-muted: #888;
+      --text-dim: #666;
+      --text-faint: #555;
+      --text-soft: #ccc;
+      --text-subtle: #999;
+      --danger: #c0392b;
+      --danger-light: #e57368;
+      --accent-glow-10: rgba(191, 149, 48, 0.1);
+      --accent-glow-15: rgba(191, 149, 48, 0.15);
+      --accent-glow-60: rgba(191, 149, 48, 0.6);
+      --danger-glow-15: rgba(192, 57, 43, 0.15);
+      --nav-bg: rgba(20, 20, 20, 0.72);
+      --shadow-color: rgba(0, 0, 0, 0.4);
+    }
+
+    body.theme-burgundy {
+      --accent-1: #a23b47;
+      --accent-2: #7a2c35;
+      --accent-3: #5c1f26;
+      --accent-4: #c96b52;
+      --accent-5: #8f3f34;
+      --bg: #ffffff;
+      --bg-card: #fdf8f6;
+      --bg-elevated: #ffffff;
+      --bg-footer: #f7ece8;
+      --border: #e6d3cd;
+      --border-row: #efe1db;
+      --border-footer: #ecdcd5;
+      --text: #2b1214;
+      --text-muted: #86595a;
+      --text-dim: #a9807f;
+      --text-faint: #c7a7a4;
+      --text-soft: #4a2624;
+      --text-subtle: #6e4340;
+      --danger: #c0392b;
+      --danger-light: #e0574a;
+      --accent-glow-10: rgba(162, 59, 71, 0.08);
+      --accent-glow-15: rgba(162, 59, 71, 0.12);
+      --accent-glow-60: rgba(162, 59, 71, 0.5);
+      --danger-glow-15: rgba(192, 57, 43, 0.12);
+      --nav-bg: rgba(255, 255, 255, 0.75);
+      --shadow-color: rgba(80, 50, 45, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+
+    .golden-bar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 8px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-4), var(--accent-5));
+      box-shadow: 0 2px 20px var(--accent-glow-60);
+      z-index: 1000;
+    }
+
+    .background-graphics {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-item {
+      position: absolute;
+      opacity: 0.07;
+      width: 60px;
+      height: 60px;
+      color: var(--accent-1);
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .bg-item svg { width: 100%; height: 100%; }
+
+    .bg-item:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; width: 50px; height: 50px; }
+    .bg-item:nth-child(2) { top: 25%; left: 85%; animation-delay: 2s; width: 70px; height: 70px; }
+    .bg-item:nth-child(3) { top: 50%; left: 10%; animation-delay: 4s; width: 55px; height: 55px; }
+    .bg-item:nth-child(4) { top: 70%; left: 75%; animation-delay: 6s; width: 65px; height: 65px; }
+    .bg-item:nth-child(5) { top: 15%; left: 50%; animation-delay: 8s; width: 45px; height: 45px; }
+    .bg-item:nth-child(6) { top: 60%; left: 92%; animation-delay: 10s; width: 50px; height: 50px; }
+    .bg-item:nth-child(7) { top: 82%; left: 30%; animation-delay: 12s; width: 60px; height: 60px; }
+    .bg-item:nth-child(8) { top: 40%; left: 40%; animation-delay: 14s; width: 40px; height: 40px; }
+    .bg-item:nth-child(9) { top: 5%; left: 92%; animation-delay: 16s; width: 55px; height: 55px; }
+    .bg-item:nth-child(10) { top: 90%; left: 55%; animation-delay: 18s; width: 45px; height: 45px; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-30px) rotate(10deg); }
+      50% { transform: translateY(10px) rotate(-5deg); }
+      75% { transform: translateY(-20px) rotate(8deg); }
+    }
+
+    /* golden bar shimmer effect */
+    .golden-bar {
+      background-size: 200% 100%;
+      animation: shimmer 6s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* fade-in-up used for staggered product card entrance */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* fade transition between tabs */
+    @keyframes tabFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* subtle ripple for clickable controls */
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      transform: scale(0);
+      animation: rippleAnim 0.6s ease-out;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(2.5); opacity: 0; }
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+
+    header h1 {
+      font-size: 64px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-4), var(--accent-5));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 16px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 8px;
+      z-index: 900;
+      background: var(--nav-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      background: transparent;
+      border: none;
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 8px 4px;
+      transition: color 0.25s;
+    }
+    .nav-brand:hover { color: var(--accent-2); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle {
+      width: 38px; height: 38px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+    }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle:hover { border-color: var(--accent-1); color: var(--accent-2); }
+
+    .cart-button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border: 1px solid var(--accent-1);
+      background: transparent;
+      color: var(--accent-2);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: all 0.25s;
+    }
+    .cart-button svg { width: 18px; height: 18px; }
+    .cart-button:hover { background: var(--accent-glow-10); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .cart-count {
+      background: var(--accent-1);
+      color: var(--bg);
+      border-radius: 50%;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      min-width: 220px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 3px var(--accent-glow-15);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-dim);
+    }
+
+    /* expandable category dropdown */
+    .category-dropdown {
+      position: relative;
+    }
+
+    .category-dropdown-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-soft);
+      font-size: 13px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.25s;
+      min-width: 190px;
+      justify-content: space-between;
+    }
+
+    .category-dropdown-btn:hover, .category-dropdown.open .category-dropdown-btn {
+      border-color: var(--accent-1);
+      color: var(--accent-2);
+    }
+
+    .category-dropdown-btn .chevron {
+      width: 14px; height: 14px;
+      transition: transform 0.25s;
+    }
+
+    .category-dropdown.open .chevron { transform: rotate(180deg); }
+
+    .category-dropdown-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 220px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px;
+      display: none;
+      z-index: 50;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      animation: tabFade 0.2s ease both;
+    }
+
+    .category-dropdown.open .category-dropdown-panel { display: block; }
+
+    .category-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 5px;
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .category-option:hover { background: var(--accent-glow-10); color: var(--accent-2); }
+    .category-option.selected { color: var(--accent-2); font-weight: 700; }
+    .category-option .count { color: var(--text-dim); font-size: 12px; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px var(--accent-glow-15);
+      border-color: var(--accent-1);
+    }
+
+    .product-image-wrap {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.08);
+    }
+
+    .product-card.out-of-stock {
+      opacity: 0.5;
+      filter: grayscale(0.6);
+    }
+
+    .stock-badge {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .stock-badge.low { background: var(--accent-glow-15); color: var(--accent-2); border: 1px solid var(--accent-1); }
+    .stock-badge.out { background: var(--danger-glow-15); color: var(--danger-light); border: 1px solid var(--danger); }
+
+    .product-info {
+      padding: 16px;
+    }
+
+    .product-category {
+      font-size: 11px;
+      color: var(--accent-1);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .product-cost {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--accent-2);
+    }
+
+    .product-cost span {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .add-btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: 1px solid var(--accent-1);
+      background: transparent;
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .add-btn:hover {
+      background: var(--accent-1);
+      color: var(--bg);
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-dim);
+    }
+
+    .cart-empty p {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .cart-items {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item-image {
+      width: 70px;
+      height: 70px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .cart-item-price {
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .qty-btn {
+      width: 32px; height: 32px;
+      border: 1px solid var(--text-faint);
+      background: transparent;
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .qty-btn:hover {
+      border-color: var(--accent-1);
+      color: var(--accent-1);
+    }
+
+    .qty-value {
+      font-size: 16px;
+      font-weight: 700;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .remove-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--text-faint);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 13px;
+      transition: all 0.3s;
+    }
+
+    .remove-btn:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .cart-total {
+      text-align: right;
+      padding: 24px 0;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent-2);
+    }
+
+    .cart-total span {
+      color: var(--text-muted);
+      font-weight: 400;
+      font-size: 16px;
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--accent-1);
+      color: var(--bg);
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .notification svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: var(--text-dim);
+      font-size: 18px;
+    }
+
+    /* checkout / payment */
+    .checkout-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      animation: tabFade 0.35s ease both;
+    }
+
+    .checkout-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .checkout-summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--text-soft);
+      border-bottom: 1px solid var(--border-row);
+    }
+
+    .checkout-summary-row:last-child { border-bottom: none; }
+
+    .checkout-summary-total {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 14px;
+      margin-top: 8px;
+      border-top: 1px solid var(--border);
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--accent-2);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-grid .full { grid-column: 1 / -1; }
+
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+
+    .form-field label {
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .form-field input, .form-field select {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-field input:focus, .form-field select:focus {
+      outline: none;
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 3px var(--accent-glow-15);
+    }
+
+    .form-field input.invalid { border-color: var(--danger); }
+
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      grid-column: 1 / -1;
+    }
+
+    .payment-method {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.25s;
+    }
+
+    .payment-method.active {
+      border-color: var(--accent-1);
+      color: var(--accent-2);
+      background: var(--accent-glow-10);
+    }
+
+    .pay-btn {
+      width: 100%;
+      padding: 15px;
+      margin-top: 22px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+      background-size: 200% 200%;
+      color: var(--bg);
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, background-position 0.6s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pay-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background-position: 100% 0;
+    }
+
+    .pay-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .order-confirmation {
+      text-align: center;
+      padding: 60px 20px;
+      animation: tabFade 0.4s ease both;
+    }
+
+    .order-confirmation .check-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      color: var(--accent-1);
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    .order-confirmation h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: var(--accent-2);
+    }
+
+    .order-confirmation p { color: var(--text-muted); margin-bottom: 6px; }
+
+    .order-id {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 8px 18px;
+      border: 1px solid var(--accent-1);
+      border-radius: 6px;
+      color: var(--accent-2);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .new-order-btn {
+      margin-top: 26px;
+      padding: 12px 32px;
+      border: 1px solid var(--text-faint);
+      background: transparent;
+      color: var(--text-soft);
+      border-radius: 6px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 13px;
+      transition: all 0.3s;
+    }
+
+    .new-order-btn:hover { border-color: var(--accent-1); color: var(--accent-2); }
+
+    .field-error {
+      color: var(--danger-light);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 560px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    /* footer */
+    .site-footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border-row);
+      background: var(--bg-footer);
+      margin-top: 60px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 44px 20px 24px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-heading {
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-1);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .footer-text {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .footer-link {
+      display: block;
+      color: var(--text-subtle);
+      font-size: 13px;
+      text-decoration: none;
+      padding: 5px 0;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: var(--accent-2); }
+
+    .footer-bottom {
+      text-align: center;
+      padding: 18px 20px;
+      border-top: 1px solid var(--border-footer);
+      color: var(--text-faint);
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .footer-inner { grid-template-columns: 1fr; }
+    }
+
+    /* modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 3000;
+      padding: 40px 20px;
+      overflow-y: auto;
+      animation: tabFade 0.25s ease both;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 640px;
+      width: 100%;
+      padding: 36px;
+      position: relative;
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+
+    .modal-box h2 {
+      color: var(--accent-2);
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .modal-box h3 {
+      color: var(--accent-1);
+      font-size: 15px;
+      margin: 18px 0 8px;
+    }
+
+    .modal-box p { font-size: 14px; margin-bottom: 8px; color: #aaa; }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 32px; height: 32px;
+      border: 1px solid #444;
+      background: transparent;
+      color: var(--text-subtle);
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover { border-color: var(--accent-1); color: var(--accent-2); }
+
+    /* cookie banner */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--bg-footer);
+      border-top: 1px solid var(--border);
+      padding: 18px 24px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      z-index: 2500;
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.4);
+    }
+
+    .cookie-banner.show { display: flex; animation: tabFade 0.4s ease both; }
+
+    .cookie-banner p {
+      color: #aaa;
+      font-size: 13px;
+      max-width: 560px;
+      margin: 0;
+    }
+
+    .cookie-banner a { color: var(--accent-2); }
+
+    .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+    .cookie-btn {
+      padding: 10px 20px;
+      border: 1px solid var(--accent-1);
+      background: var(--accent-1);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .cookie-btn.secondary {
+      background: transparent;
+      color: var(--accent-1);
+    }
+
+    /* delivery method / paczkomat */
+    .delivery-methods {
+      display: flex;
+      gap: 10px;
+      grid-column: 1 / -1;
+    }
+
+    .delivery-method {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      transition: all 0.25s;
+    }
+
+    .delivery-method.active {
+      border-color: var(--accent-1);
+      color: var(--accent-2);
+      background: var(--accent-glow-10);
+    }
+
+    .locker-panel {
+      grid-column: 1 / -1;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .locker-map {
+      position: relative;
+      height: 240px;
+      background: var(--bg-elevated);
+      overflow: hidden;
+    }
+
+    .locker-map .leaflet-container {
+      background: var(--bg-elevated);
+      font-family: inherit;
+    }
+
+    .locker-search {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px;
+    }
+    .locker-search:focus { outline: none; }
+
+    .locker-list {
+      max-height: 160px;
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    .locker-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid #262626;
+      cursor: pointer;
+      font-size: 13px;
+      color: #aaa;
+      transition: background 0.2s;
+    }
+
+    .locker-item:hover { background: var(--bg-card); }
+    .locker-item.selected { background: var(--accent-glow-15); color: var(--accent-2); }
+    .locker-item .locker-code { color: var(--accent-1); font-weight: 700; margin-right: 8px; }
+
+    .selected-locker-box {
+      grid-column: 1 / -1;
+      padding: 12px 16px;
+      background: var(--accent-glow-10);
+      border: 1px solid var(--accent-1);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--accent-2);
+      display: none;
+    }
+    .selected-locker-box.show { display: block; }
+
+    .inpost-widget-wrap {
+      grid-column: 1 / -1;
+    }
+
+    .inpost-widget-wrap inpost-geowidget {
+      display: block;
+      width: 100%;
+      height: 420px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .locker-source-note {
+      grid-column: 1 / -1;
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .locker-source-note a { color: var(--text-muted); }
+
+    /* test mode helper */
+    .test-mode-bar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 16px;
+      background: rgba(88, 148, 191, 0.08);
+      border: 1px dashed #5894bf;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #8fb8d9;
+    }
+
+    .test-mode-btn {
+      padding: 8px 14px;
+      border: 1px solid #5894bf;
+      background: transparent;
+      color: #8fb8d9;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .test-mode-btn:hover { background: rgba(88,148,191,0.15); }
+
+    .test-badge {
+      display: inline-block;
+      background: #5894bf;
+      color: #0e1a22;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+  </style>
+  <!-- InPost Geowidget — prawdziwa mapa Paczkomatów. Wymaga tokenu z manager.paczkomaty.pl
+       (produkcja) lub sandbox-manager.paczkomaty.pl (środowisko testowe).
+       Ustaw go w zmiennej INPOST_GEOWIDGET_TOKEN w skrypcie poniżej. -->
+  <link rel="stylesheet" href="https://geowidget.inpost.pl/inpost-geowidget.css">
+  <script src="https://geowidget.inpost.pl/inpost-geowidget.js" defer></script>
+
+  <!-- Alternatywa bez konta/tokenu InPost: Leaflet + kafelki OpenStreetMap (darmowe,
+       nie wymagają żadnego klucza API). Punkty paczkomatów pobierane są z publicznych,
+       otwartych danych OpenStreetMap przez Overpass API — patrz funkcja
+       loadRealOsmLockers() w skrypcie na dole strony. -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" defer></script>
+  <!-- Supabase JS SDK -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <!-- Konfiguracja Supabase (wypełnij config.js swoimi danymi) -->
+  <script src="config.js"></script>
+</head>
+<body>
+  <div class="golden-bar"></div>
+
+  <div class="background-graphics">
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2C8.2 2 5 8.3 5 14.2a7 7 0 0 0 14 0C19 8.3 15.8 2 12 2z"/><path d="M8.2 11.5c1.3 1 2.3 1 3.8 0s2.5-1 3.8 0" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7.5 4.5h9v3l1.2 2.2V19a2 2 0 0 1-2 2H8.3a2 2 0 0 1-2-2V9.7L7.5 7.5v-3z"/><line x1="6.5" y1="10.5" x2="17.5" y2="10.5" stroke-width="0.8"/><line x1="6.5" y1="14" x2="17.5" y2="14" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2C8.2 2 5 8.3 5 14.2a7 7 0 0 0 14 0C19 8.3 15.8 2 12 2z"/><path d="M8.2 11.5c1.3 1 2.3 1 3.8 0s2.5-1 3.8 0" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3.5" y="3.5" width="17" height="17" rx="1"/><rect x="6.5" y="6.5" width="11" height="11" rx="0.5" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7.5 4.5h9v3l1.2 2.2V19a2 2 0 0 1-2 2H8.3a2 2 0 0 1-2-2V9.7L7.5 7.5v-3z"/><line x1="6.5" y1="10.5" x2="17.5" y2="10.5" stroke-width="0.8"/><line x1="6.5" y1="14" x2="17.5" y2="14" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2C8.2 2 5 8.3 5 14.2a7 7 0 0 0 14 0C19 8.3 15.8 2 12 2z"/><path d="M8.2 11.5c1.3 1 2.3 1 3.8 0s2.5-1 3.8 0" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7.5 4.5h9v3l1.2 2.2V19a2 2 0 0 1-2 2H8.3a2 2 0 0 1-2-2V9.7L7.5 7.5v-3z"/><line x1="6.5" y1="10.5" x2="17.5" y2="10.5" stroke-width="0.8"/><line x1="6.5" y1="14" x2="17.5" y2="14" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3.5" y="3.5" width="17" height="17" rx="1"/><rect x="6.5" y="6.5" width="11" height="11" rx="0.5" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2C8.2 2 5 8.3 5 14.2a7 7 0 0 0 14 0C19 8.3 15.8 2 12 2z"/><path d="M8.2 11.5c1.3 1 2.3 1 3.8 0s2.5-1 3.8 0" stroke-width="0.8"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7.5 4.5h9v3l1.2 2.2V19a2 2 0 0 1-2 2H8.3a2 2 0 0 1-2-2V9.7L7.5 7.5v-3z"/><line x1="6.5" y1="10.5" x2="17.5" y2="10.5" stroke-width="0.8"/><line x1="6.5" y1="14" x2="17.5" y2="14" stroke-width="0.8"/></svg></span>
+  </div>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-brand" onclick="switchTab('shop')">Sklep</button>
+      <div class="nav-actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Zmień motyw kolorystyczny">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="4.5"/>
+            <path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/>
+          </svg>
+        </button>
+        <button class="cart-button" onclick="switchTab('cart')" title="Koszyk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
+            <path d="M2.5 3h2l2.3 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 7H6"/>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="content">
+    <header>
+      <h1>Madzik</h1>
+      <p>Sztuka &bull; Tradycja &bull; Pasja</p>
+    </header>
+
+    <div id="tab-shop" class="tab-content active">
+      <div class="toolbar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Szukaj produktu..." oninput="handleSearch(this.value)">
+        <div class="category-dropdown" id="categoryDropdown">
+          <button type="button" class="category-dropdown-btn" onclick="toggleCategoryDropdown(event)">
+            <span id="categoryLabel">Wszystkie kategorie</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="category-dropdown-panel" id="categoryPanel"></div>
+        </div>
+        <div class="category-dropdown" id="sortDropdown">
+          <button type="button" class="category-dropdown-btn" onclick="toggleSortDropdown(event)">
+            <span id="sortLabel">Sortuj: domyślnie</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="category-dropdown-panel" id="sortPanel"></div>
+        </div>
+      </div>
+      <div id="productsContainer" class="products-grid"></div>
+    </div>
+
+    <div id="tab-cart" class="tab-content">
+      <div id="cartContainer"></div>
+    </div>
+
+    <div id="tab-checkout" class="tab-content">
+      <div id="checkoutContainer"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-heading">Madzik</div>
+        <p class="footer-text">Ręcznie robione pisanki, miody od lokalnych pszczelarzy i oryginalne obrazy — sztuka i tradycja w jednym miejscu.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Informacje</div>
+        <a href="#" class="footer-link" onclick="openModal('regulamin');return false;">Regulamin sklepu</a>
+        <a href="#" class="footer-link" onclick="openModal('prywatnosc');return false;">Polityka prywatności</a>
+        <a href="#" class="footer-link" onclick="openModal('cookies');return false;">Polityka cookies</a>
+        <a href="#" class="footer-link" onclick="openModal('zwroty');return false;">Zwroty i reklamacje</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Kontakt</div>
+        <p class="footer-text">sklep@madzik.pl<br>+48 600 000 000<br>ul. Rzemieślnicza 12, 61-001 Poznań</p>
+        <p class="footer-text">NIP: 000-000-00-00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Madzik. Wszystkie prawa zastrzeżone.</div>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="cookie-banner" id="cookieBanner">
+    <p>Ta strona używa plików cookie, aby zapewnić prawidłowe działanie koszyka i sklepu. Korzystając z serwisu, akceptujesz naszą <a href="#" onclick="openModal('cookies');return false;">politykę cookies</a>.</p>
+    <div class="cookie-actions">
+      <button class="cookie-btn secondary" onclick="acceptCookies(false)">Tylko niezbędne</button>
+      <button class="cookie-btn" onclick="acceptCookies(true)">Akceptuję wszystkie</button>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    // ============================================================
+    // SUPABASE — inicjalizacja klienta
+    // ============================================================
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ============================================================
+    // KOSZYK (localStorage) — nie potrzebuje serwera
+    // ============================================================
+    function getCart() {
+      try { return JSON.parse(localStorage.getItem('madzik_cart') || '[]'); }
+      catch { return []; }
+    }
+    function saveCart(cart) {
+      localStorage.setItem('madzik_cart', JSON.stringify(cart));
+    }
+    function getCartCount() {
+      return getCart().reduce((s, i) => s + i.quantity, 0);
+    }
+    function updateCartCountUI() {
+      document.getElementById('cartCount').textContent = getCartCount();
+    }
+
+    // ============================================================
+    // PRODUKTY — ładowanie z Supabase
+    // ============================================================
+    let allProducts = [];
+    let currentCategory = '';
+    let currentSearch = '';
+    let currentSort = '';
+
+    function showNotification(msg, type = 'success') {
+      const el = document.getElementById('notification');
+      const icon = type === 'error'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
+      el.innerHTML = icon + `<span>${msg}</span>`;
+      el.classList.add('show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('show'), 2500);
+    }
+
+    function createRipple(e, btn) {
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      const circle = document.createElement('span');
+      const size = Math.max(rect.width, rect.height);
+      circle.className = 'ripple-circle';
+      circle.style.width = circle.style.height = size + 'px';
+      circle.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      circle.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      btn.appendChild(circle);
+      setTimeout(() => circle.remove(), 600);
+    }
+
+    function switchTab(name) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      const panel = document.getElementById(`tab-${name}`);
+      panel.classList.add('active');
+      panel.style.animation = 'none';
+      requestAnimationFrame(() => { panel.style.animation = 'tabFade 0.35s ease both'; });
+      if (name === 'cart') loadCart();
+      if (name === 'checkout') loadCheckout();
+    }
+
+    function toggleCategoryDropdown(evt) {
+      if (evt) evt.stopPropagation();
+      document.getElementById('sortDropdown')?.classList.remove('open');
+      document.getElementById('categoryDropdown').classList.toggle('open');
+    }
+
+    function toggleSortDropdown(evt) {
+      if (evt) evt.stopPropagation();
+      document.getElementById('categoryDropdown')?.classList.remove('open');
+      document.getElementById('sortDropdown').classList.toggle('open');
+    }
+
+    document.addEventListener('click', (evt) => {
+      const catDd = document.getElementById('categoryDropdown');
+      if (catDd && !catDd.contains(evt.target)) catDd.classList.remove('open');
+      const sortDd = document.getElementById('sortDropdown');
+      if (sortDd && !sortDd.contains(evt.target)) sortDd.classList.remove('open');
+    });
+
+    const SORT_OPTIONS = [
+      { value: '', label: 'Sortuj: domyślnie' },
+      { value: 'price_asc', label: 'Cena: rosnąco' },
+      { value: 'price_desc', label: 'Cena: malejąco' },
+      { value: 'name_asc', label: 'Nazwa: A-Z' }
+    ];
+
+    function renderSortDropdown() {
+      const panel = document.getElementById('sortPanel');
+      if (!panel) return;
+      panel.innerHTML = SORT_OPTIONS.map(o => `
+        <div class="category-option ${currentSort === o.value ? 'selected' : ''}" onclick="handleSort('${o.value}')">
+          <span>${o.label}</span>
+        </div>
+      `).join('');
+    }
+
+    function filterProducts(category) {
+      currentCategory = category;
+      const label = document.getElementById('categoryLabel');
+      if (label) label.textContent = category || 'Wszystkie kategorie';
+      renderCategoryDropdown();
+      document.getElementById('categoryDropdown').classList.remove('open');
+      renderProducts();
+    }
+
+    function handleSearch(value) {
+      currentSearch = value.trim().toLowerCase();
+      renderProducts();
+    }
+
+    function handleSort(value) {
+      currentSort = value;
+      const opt = SORT_OPTIONS.find(o => o.value === value);
+      const label = document.getElementById('sortLabel');
+      if (label && opt) label.textContent = opt.label;
+      renderSortDropdown();
+      document.getElementById('sortDropdown').classList.remove('open');
+      renderProducts();
+    }
+
+    function getFilteredProducts() {
+      let list = currentCategory
+        ? allProducts.filter(p => p.category === currentCategory)
+        : allProducts.slice();
+      if (currentSearch) {
+        list = list.filter(p => p.name.toLowerCase().includes(currentSearch));
+      }
+      if (currentSort === 'price_asc') list = list.slice().sort((a, b) => a.cost - b.cost);
+      else if (currentSort === 'price_desc') list = list.slice().sort((a, b) => b.cost - a.cost);
+      else if (currentSort === 'name_asc') list = list.slice().sort((a, b) => a.name.localeCompare(b.name, 'pl'));
+      return list;
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('productsContainer');
+      const filtered = getFilteredProducts();
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="no-results">Brak produktów spełniających kryteria.</div>`;
+        return;
+      }
+      container.innerHTML = filtered.map((p, idx) => {
+        const outOfStock = p.stock === 0;
+        const lowStock = p.stock > 0 && p.stock <= 3;
+        const badge = outOfStock
+          ? `<span class="stock-badge out">Wyprzedane</span>`
+          : lowStock
+            ? `<span class="stock-badge low">Ostatnie ${p.stock} szt.</span>`
+            : '';
+        return `
+        <div class="product-card ${outOfStock ? 'out-of-stock' : ''}" style="animation-delay:${Math.min(idx * 0.05, 0.4)}s">
+          <div class="product-image-wrap">
+            <img class="product-image" src="${p.image}" alt="${p.name}" loading="lazy">
+          </div>
+          <div class="product-info">
+            <div class="product-category">${p.category}</div>
+            <div class="product-name">${p.name}</div>
+            ${badge}
+            <div class="product-cost">${p.cost.toFixed(2)} <span>zł</span></div>
+            <button class="add-btn ripple" onclick="addToCart(${p.id}, event)" ${outOfStock ? 'disabled' : ''}>${outOfStock ? 'Niedostępny' : 'Dodaj do koszyka'}</button>
+          </div>
+        </div>
+      `;
+      }).join('');
+    }
+
+    function renderCategoryDropdown() {
+      const panel = document.getElementById('categoryPanel');
+      if (!panel) return;
+      const cats = [...new Set(allProducts.map(p => p.category))];
+      const countFor = (c) => c ? allProducts.filter(p => p.category === c).length : allProducts.length;
+      const options = [''].concat(cats);
+      panel.innerHTML = options.map(c => `
+        <div class="category-option ${currentCategory === c ? 'selected' : ''}" onclick="filterProducts('${c}')">
+          <span>${c || 'Wszystkie kategorie'}</span>
+          <span class="count">${countFor(c)}</span>
+        </div>
+      `).join('');
+    }
+
+    async function loadProducts() {
+      try {
+        const { data, error } = await supabaseClient.from('products').select('*');
+        if (error) throw error;
+        allProducts = data || [];
+      } catch (e) {
+        allProducts = [];
+        showNotification('Nie udało się załadować produktów z Supabase.', 'error');
+      }
+      renderCategoryDropdown();
+      renderSortDropdown();
+      renderProducts();
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const isAlt = body.classList.toggle('theme-burgundy');
+      document.cookie = `theme=${isAlt ? 'burgundy' : 'gold'}; max-age=31536000; path=/`;
+    }
+
+    function applyStoredTheme() {
+      if (getCookie('theme') === 'burgundy') {
+        document.body.classList.add('theme-burgundy');
+      }
+    }
+
+    // ============================================================
+    // KOSZYK — operacje na localStorage
+    // ============================================================
+    async function addToCart(id, evt) {
+      if (evt) createRipple(evt, evt.currentTarget);
+      const cart = getCart();
+      const existing = cart.find(i => i.id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ id, quantity: 1 });
+      }
+      // Walidacja stanu magazynowego
+      const product = allProducts.find(p => p.id === id);
+      if (product && product.stock !== null) {
+        const qty = cart.find(i => i.id === id).quantity;
+        if (qty > product.stock) {
+          if (existing) existing.quantity -= 1;
+          else cart.pop();
+          showNotification(`Dostępne tylko ${product.stock} szt.`, 'error');
+          return;
+        }
+      }
+      saveCart(cart);
+      showNotification('Dodano do koszyka!');
+      updateCartCountUI();
+    }
+
+    function loadCart() {
+      const container = document.getElementById('cartContainer');
+      const cart = getCart();
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="cart-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" style="width:56px;height:56px;color:var(--text-faint);">
+              <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
+              <path d="M2.5 3h2l2.3 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 7H6"/>
+            </svg>
+            <p>Koszyk jest pusty</p>
+          </div>
+        `;
+        return;
+      }
+      const items = cart.map(ci => {
+        const p = allProducts.find(pr => pr.id === ci.id);
+        return p ? { ...p, quantity: ci.quantity } : null;
+      }).filter(Boolean);
+      const total = items.reduce((s, i) => s + i.cost * i.quantity, 0);
+      container.innerHTML = `
+        <div class="cart-items">
+          ${items.map(item => `
+            <div class="cart-item">
+              <img class="cart-item-image" src="${item.image}" alt="${item.name}">
+              <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-price">${item.cost.toFixed(2)} zł</div>
+              </div>
+              <div class="cart-item-qty">
+                <button class="qty-btn" onclick="updateQty(${item.id}, ${item.quantity - 1})">−</button>
+                <span class="qty-value">${item.quantity}</span>
+                <button class="qty-btn" onclick="updateQty(${item.id}, ${item.quantity + 1})">+</button>
+              </div>
+              <button class="remove-btn" onclick="removeFromCart(${item.id})">Usuń</button>
+            </div>
+          `).join('')}
+          <div class="cart-total"><span>Razem: </span>${total.toFixed(2)} zł</div>
+          <button class="pay-btn" onclick="switchTab('checkout')">Przejdź do kasy</button>
+        </div>
+      `;
+    }
+
+    function updateQty(id, qty) {
+      if (qty <= 0) {
+        removeFromCart(id);
+        return;
+      }
+      const cart = getCart();
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      // Sprawdź stan magazynowy
+      const product = allProducts.find(p => p.id === id);
+      if (product && product.stock !== null && qty > product.stock) {
+        showNotification(`Dostępne tylko ${product.stock} szt.`, 'error');
+        return;
+      }
+      item.quantity = qty;
+      saveCart(cart);
+      loadCart();
+      updateCartCountUI();
+    }
+
+    function removeFromCart(id) {
+      const cart = getCart().filter(i => i.id !== id);
+      saveCart(cart);
+      loadCart();
+      updateCartCountUI();
+    }
+
+    // ============================================================
+    // CHECKOUT — finalizacja zamówienia przez Supabase RPC
+    // ============================================================
+    let checkoutCart = null;
+    let selectedPayment = 'karta';
+    let selectedDelivery = 'kurier';
+    let selectedLocker = null;
+
+    const PACZKOMATY = [
+      { code: 'POZ01M', address: 'ul. Święty Marcin 24, Poznań', lat: 52.4085, lng: 16.9295 },
+      { code: 'POZ12A', address: 'ul. Głogowska 108, Poznań', lat: 52.3925, lng: 16.8985 },
+      { code: 'POZ34C', address: 'ul. Dąbrowskiego 79, Poznań', lat: 52.4145, lng: 16.8875 },
+      { code: 'POZ07K', address: 'ul. Bałtycka 4, Poznań', lat: 52.4295, lng: 16.8825 },
+      { code: 'POZ19T', address: 'os. Bolesława Chrobrego 121, Poznań', lat: 52.3765, lng: 16.8505 },
+      { code: 'POZ22B', address: 'ul. Zwierzyniecka 9, Poznań', lat: 52.4075, lng: 16.9145 }
+    ];
+
+    function loadCheckout() {
+      const container = document.getElementById('checkoutContainer');
+      const cart = getCart();
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="cart-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" style="width:56px;height:56px;color:var(--text-faint);">
+              <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
+              <path d="M2.5 3h2l2.3 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 7H6"/>
+            </svg>
+            <p>Koszyk jest pusty — dodaj produkty w sklepie, aby przejść do kasy.</p>
+          </div>
+        `;
+        return;
+      }
+      const items = cart.map(ci => {
+        const p = allProducts.find(pr => pr.id === ci.id);
+        return p ? { ...p, quantity: ci.quantity } : null;
+      }).filter(Boolean);
+      const total = items.reduce((s, i) => s + i.cost * i.quantity, 0);
+      checkoutCart = { items, total };
+
+      container.innerHTML = `
+        <div class="checkout-wrap">
+          <div class="checkout-summary">
+            ${items.map(i => `
+              <div class="checkout-summary-row">
+                <span>${i.name} × ${i.quantity}</span>
+                <span>${(i.cost * i.quantity).toFixed(2)} zł</span>
+              </div>
+            `).join('')}
+            <div class="checkout-summary-total">
+              <span>Razem</span>
+              <span>${total.toFixed(2)} zł</span>
+            </div>
+          </div>
+
+          <form id="checkoutForm" class="form-grid" onsubmit="return submitOrder(event)">
+            <div class="test-mode-bar">
+              <span>Chcesz tylko wypróbować kasę? Nic nie zostanie naprawdę obciążone.</span>
+              <button type="button" class="test-mode-btn" onclick="fillTestData()">Wypełnij danymi testowymi</button>
+            </div>
+
+            <div class="form-field">
+              <label>Imię</label>
+              <input type="text" id="f_firstName" required>
+            </div>
+            <div class="form-field">
+              <label>Nazwisko</label>
+              <input type="text" id="f_lastName" required>
+            </div>
+            <div class="form-field full">
+              <label>E-mail</label>
+              <input type="email" id="f_email" required>
+            </div>
+
+            <div class="delivery-methods">
+              <div class="delivery-method active" data-delivery="kurier" onclick="selectDelivery('kurier')">Kurier na adres</div>
+              <div class="delivery-method" data-delivery="paczkomat" onclick="selectDelivery('paczkomat')">Paczkomat</div>
+            </div>
+
+            <div id="deliveryFields" class="form-grid full" style="grid-column:1/-1;"></div>
+
+            <div class="payment-methods">
+              <div class="payment-method active" data-method="karta" onclick="selectPayment('karta')">Karta</div>
+              <div class="payment-method" data-method="blik" onclick="selectPayment('blik')">BLIK</div>
+              <div class="payment-method" data-method="przelew" onclick="selectPayment('przelew')">Przelew</div>
+              <div class="payment-method" data-method="pobranie" onclick="selectPayment('pobranie')">Za pobraniem</div>
+            </div>
+
+            <div id="paymentFields" class="form-grid full" style="grid-column:1/-1;"></div>
+
+            <div class="full">
+              <button type="submit" class="pay-btn" id="payBtn">Zapłać ${total.toFixed(2)} zł</button>
+            </div>
+          </form>
+        </div>
+      `;
+      selectedPayment = 'karta';
+      selectedDelivery = 'kurier';
+      selectedLocker = null;
+      renderDeliveryFields();
+      renderPaymentFields();
+    }
+
+    function selectDelivery(method) {
+      selectedDelivery = method;
+      document.querySelectorAll('.delivery-method').forEach(el => {
+        el.classList.toggle('active', el.dataset.delivery === method);
+      });
+      renderDeliveryFields();
+    }
+
+    const INPOST_GEOWIDGET_TOKEN = '';
+
+    function renderDeliveryFields() {
+      const el = document.getElementById('deliveryFields');
+      if (!el) return;
+      if (selectedDelivery === 'kurier') {
+        el.innerHTML = `
+          <div class="form-field full">
+            <label>Adres dostawy</label>
+            <input type="text" id="f_address" placeholder="Ulica, numer, miasto, kod pocztowy" required>
+          </div>
+        `;
+        return;
+      }
+      if (INPOST_GEOWIDGET_TOKEN) {
+        el.innerHTML = `
+          <div class="inpost-widget-wrap">
+            <inpost-geowidget id="inpostWidget" onpoint="inpost.geowidget.onpointselect" token="${INPOST_GEOWIDGET_TOKEN}" language="pl" config="parcelcollect"></inpost-geowidget>
+          </div>
+          <div class="selected-locker-box" id="selectedLockerBox"></div>
+          <div class="locker-source-note"><span>Mapa dostarczana przez InPost Geowidget.</span></div>
+        `;
+        return;
+      }
+      el.innerHTML = `
+        <div class="locker-panel">
+          <input type="text" class="locker-search" id="lockerSearch" placeholder="Szukaj paczkomatu po mieście lub kodzie..." oninput="renderLockerList(this.value)">
+          <div class="locker-map" id="lockerMap"></div>
+          <div class="locker-list" id="lockerList"></div>
+        </div>
+        <div class="selected-locker-box" id="selectedLockerBox"></div>
+        <div class="locker-source-note">
+          <span id="lockerSourceLabel">Mapa: OpenStreetMap (Leaflet) — bez konta InPost.</span>
+          <a href="https://manager.paczkomaty.pl" target="_blank" rel="noopener">Wygeneruj token InPost</a>
+        </div>
+      `;
+      initLockerMap();
+    }
+
+    function handleInpostPointSelect(point) {
+      const addrObj = point.address_details || point.address || {};
+      const address = [addrObj.line1, addrObj.line2].filter(Boolean).join(', ') || point.address_line || '';
+      selectedLocker = { code: point.name, address };
+      const box = document.getElementById('selectedLockerBox');
+      if (box) {
+        box.classList.add('show');
+        box.innerHTML = `Wybrany paczkomat: <strong>${selectedLocker.code}</strong>${address ? ' — ' + address : ''}`;
+      }
+    }
+
+    document.addEventListener('inpost.geowidget.onpointselect', (event) => {
+      const point = event.detail || event.details;
+      if (point) handleInpostPointSelect(point);
+    });
+
+    let lockerMapInstance = null;
+    let lockerMarkers = [];
+    let currentLockerData = PACZKOMATY;
+
+    function initLockerMap() {
+      const mapDiv = document.getElementById('lockerMap');
+      if (!mapDiv || typeof L === 'undefined') {
+        currentLockerData = PACZKOMATY;
+        renderLockerList('');
+        return;
+      }
+      if (lockerMapInstance) { lockerMapInstance.remove(); lockerMapInstance = null; }
+      currentLockerData = PACZKOMATY;
+      lockerMapInstance = L.map('lockerMap', { scrollWheelZoom: false }).setView([52.4064, 16.9252], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>', maxZoom: 18
+      }).addTo(lockerMapInstance);
+      plotLockerMarkers(currentLockerData);
+      renderLockerList('');
+      loadRealOsmLockers();
+    }
+
+    function plotLockerMarkers(data) {
+      if (!lockerMapInstance) return;
+      lockerMarkers.forEach(m => lockerMapInstance.removeLayer(m));
+      lockerMarkers = [];
+      data.forEach(p => {
+        const marker = L.circleMarker([p.lat, p.lng], {
+          radius: 8, color: '#a23b47', weight: 2, fillColor: '#fcf6ba', fillOpacity: 0.9
+        }).addTo(lockerMapInstance);
+        marker.bindTooltip(`${p.code} — ${p.address}`);
+        marker.on('click', () => pickLocker(p.code));
+        lockerMarkers.push(marker);
+      });
+    }
+
+    async function loadRealOsmLockers() {
+      const bbox = '52.30,16.75,52.50,17.05';
+      const query = `[out:json][timeout:15];(node["amenity"="parcel_locker"](${bbox});node["brand"="InPost"](${bbox}););out body;`;
+      const label = document.getElementById('lockerSourceLabel');
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        const res = await fetch('https://overpass-api.de/api/interpreter', {
+          method: 'POST', body: 'data=' + encodeURIComponent(query), signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('Overpass API error');
+        const osmData = await res.json();
+        const points = (osmData.elements || []).filter(el => el.lat && el.lon).map(el => {
+          const tags = el.tags || {};
+          const code = tags.ref || tags.name || tags['ref:inpost'] || `OSM-${el.id}`;
+          const street = tags['addr:street'] || '';
+          const num = tags['addr:housenumber'] || '';
+          const city = tags['addr:city'] || 'Poznań';
+          const streetPart = [street, num].filter(Boolean).join(' ');
+          const address = streetPart ? `${streetPart}, ${city}` : city;
+          return { code, address, lat: el.lat, lng: el.lon };
+        });
+        if (points.length > 0) {
+          currentLockerData = points;
+          plotLockerMarkers(points);
+          renderLockerList(document.getElementById('lockerSearch')?.value || '');
+          if (label) label.textContent = `Znaleziono ${points.length} paczkomatów w danych OpenStreetMap.`;
+        }
+      } catch (e) {
+        if (label) label.textContent = 'Nie udało się pobrać danych z OSM — pokazano przykładowe punkty.';
+      }
+    }
+
+    function renderLockerList(query) {
+      const list = document.getElementById('lockerList');
+      if (!list) return;
+      const q = query.trim().toLowerCase();
+      const filtered = currentLockerData.filter(p => p.code.toLowerCase().includes(q) || p.address.toLowerCase().includes(q));
+      list.innerHTML = filtered.length
+        ? filtered.map(p => `<div class="locker-item ${selectedLocker && selectedLocker.code === p.code ? 'selected' : ''}" onclick="pickLocker('${p.code}')"><span class="locker-code">${p.code}</span>${p.address}</div>`).join('')
+        : `<div class="locker-item">Brak wyników</div>`;
+    }
+
+    function pickLocker(code) {
+      selectedLocker = currentLockerData.find(p => p.code === code) || null;
+      plotLockerMarkers(currentLockerData);
+      renderLockerList(document.getElementById('lockerSearch')?.value || '');
+      const box = document.getElementById('selectedLockerBox');
+      if (box && selectedLocker) {
+        box.classList.add('show');
+        box.innerHTML = `Wybrany paczkomat: <strong>${selectedLocker.code}</strong> — ${selectedLocker.address}`;
+      }
+    }
+
+    function selectPayment(method) {
+      selectedPayment = method;
+      document.querySelectorAll('.payment-method').forEach(el => el.classList.toggle('active', el.dataset.method === method));
+      renderPaymentFields();
+    }
+
+    function renderPaymentFields() {
+      const el = document.getElementById('paymentFields');
+      if (!el) return;
+      if (selectedPayment === 'karta') {
+        el.innerHTML = `
+          <div class="form-field full"><label>Numer karty</label><input type="text" id="f_cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required></div>
+          <div class="form-field"><label>Data ważności</label><input type="text" id="f_cardExpiry" placeholder="MM/RR" maxlength="5" required></div>
+          <div class="form-field"><label>CVC</label><input type="text" id="f_cardCvc" placeholder="123" maxlength="3" required></div>
+        `;
+      } else if (selectedPayment === 'blik') {
+        el.innerHTML = `<div class="form-field full"><label>Kod BLIK</label><input type="text" id="f_blikCode" placeholder="6 cyfr" maxlength="6" required></div>`;
+      } else {
+        el.innerHTML = '';
+      }
+    }
+
+    function fillTestData() {
+      document.getElementById('f_firstName').value = 'Jan';
+      document.getElementById('f_lastName').value = 'Testowy';
+      document.getElementById('f_email').value = 'test@example.com';
+      selectDelivery('paczkomat');
+      pickLocker('POZ01M');
+      selectPayment('karta');
+      const cardNum = document.getElementById('f_cardNumber');
+      const cardExp = document.getElementById('f_cardExpiry');
+      const cardCvc = document.getElementById('f_cardCvc');
+      if (cardNum) cardNum.value = '4242 4242 4242 4242';
+      if (cardExp) cardExp.value = '12/29';
+      if (cardCvc) cardCvc.value = '123';
+      document.querySelectorAll('#checkoutForm input').forEach(i => i.classList.remove('invalid'));
+      showNotification('Formularz wypełniony danymi testowymi.');
+    }
+
+    function validateCheckoutForm() {
+      let valid = true;
+      document.querySelectorAll('#checkoutForm input[required]').forEach(input => {
+        if (!input.value.trim()) { input.classList.add('invalid'); valid = false; }
+        else { input.classList.remove('invalid'); }
+      });
+      if (selectedDelivery === 'paczkomat' && !selectedLocker) {
+        showNotification('Wybierz paczkomat na mapie lub z listy.', 'error');
+        valid = false;
+      }
+      return valid;
+    }
+
+    function isTestPayment() {
+      const cardNum = document.getElementById('f_cardNumber');
+      const blik = document.getElementById('f_blikCode');
+      if (cardNum && cardNum.value.replace(/\s/g, '') === '4242424242424242') return true;
+      if (blik && blik.value.trim() === '123456') return true;
+      return false;
+    }
+
+    async function submitOrder(evt) {
+      evt.preventDefault();
+      if (!validateCheckoutForm()) {
+        showNotification('Uzupełnij wszystkie wymagane pola.', 'error');
+        return false;
+      }
+      const payBtn = document.getElementById('payBtn');
+      payBtn.disabled = true;
+      payBtn.textContent = 'Przetwarzanie...';
+
+      const cart = getCart();
+      const orderId = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const items = cart.map(ci => {
+        const p = allProducts.find(pr => pr.id === ci.id);
+        return p ? { id: p.id, name: p.name, cost: p.cost, quantity: ci.quantity } : null;
+      }).filter(Boolean);
+      const total = items.reduce((s, i) => s + i.cost * i.quantity, 0);
+
+      const customer = {
+        firstName: document.getElementById('f_firstName').value.trim(),
+        lastName: document.getElementById('f_lastName').value.trim(),
+        email: document.getElementById('f_email').value.trim()
+      };
+      if (selectedDelivery === 'kurier') {
+        customer.address = document.getElementById('f_address').value.trim();
+      }
+
+      try {
+        const { data, error } = await supabaseClient.rpc('process_checkout', {
+          p_order_id: orderId,
+          p_customer: customer,
+          p_payment_method: selectedPayment,
+          p_delivery_method: selectedDelivery,
+          p_locker: selectedDelivery === 'paczkomat' ? selectedLocker : null,
+          p_items: items,
+          p_total: total,
+          p_is_test: isTestPayment()
+        });
+        if (error) throw error;
+        if (data.error) throw new Error(data.error);
+
+        // Sukces — wyczyść koszyk
+        saveCart([]);
+        updateCartCountUI();
+
+        const order = {
+          id: orderId,
+          customer,
+          paymentMethod: selectedPayment,
+          deliveryMethod: selectedDelivery,
+          locker: selectedDelivery === 'paczkomat' ? selectedLocker : null,
+          items,
+          total,
+          isTest: isTestPayment()
+        };
+        renderOrderConfirmation(order);
+      } catch (e) {
+        showNotification(e.message || 'Błąd składania zamówienia.', 'error');
+        payBtn.disabled = false;
+        payBtn.textContent = `Zapłać ${(checkoutCart?.total || total).toFixed(2)} zł`;
+      }
+      return false;
+    }
+
+    function renderOrderConfirmation(order) {
+      const container = document.getElementById('checkoutContainer');
+      const deliveryLine = order.deliveryMethod === 'paczkomat' && order.locker
+        ? `Dostawa: Paczkomat ${order.locker.code} — ${order.locker.address}`
+        : `Dostawa: kurier na adres ${order.customer.address || ''}`;
+      container.innerHTML = `
+        <div class="order-confirmation">
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+          <h2>Dziękujemy za zamówienie!${order.isTest ? '<span class="test-badge">TEST</span>' : ''}</h2>
+          <p>Potwierdzenie zostało wysłane na adres ${order.customer.email}</p>
+          <p>Kwota: ${order.total.toFixed(2)} zł &bull; Płatność: ${order.paymentMethod}</p>
+          <p>${deliveryLine}</p>
+          <div class="order-id">Nr zamówienia: ${order.id}</div>
+          <div><button class="new-order-btn" onclick="switchTab('shop')">Wróć do sklepu</button></div>
+        </div>
+      `;
+    }
+
+    const MODAL_CONTENT = {
+      regulamin: `<h2>Regulamin sklepu</h2><h3>1. Postanowienia ogólne</h3><p>Sklep internetowy Madzik prowadzony jest w celu sprzedaży ręcznie wykonanych pisanek, miodów oraz obrazów. Złożenie zamówienia jest równoznaczne z akceptacją niniejszego regulaminu.</p><h3>2. Zamówienia</h3><p>Zamówienia składane są za pośrednictwem koszyka i formularza kasy. Umowę sprzedaży uważa się za zawartą z chwilą potwierdzenia zamówienia przez sklep.</p><h3>3. Ceny i płatności</h3><p>Wszystkie ceny podane są w złotych polskich i zawierają podatek VAT.</p><h3>4. Dostawa</h3><p>Zamówienia dostarczane są kurierem na wskazany adres lub do wybranego paczkomatu.</p><h3>5. Zwroty i reklamacje</h3><p>Klient może odstąpić od umowy w terminie 14 dni od otrzymania przesyłki.</p><h3>6. Postanowienia końcowe</h3><p>W sprawach nieuregulowanych zastosowanie mają przepisy Kodeksu cywilnego.</p>`,
+      prywatnosc: `<h2>Polityka prywatności</h2><p>Administratorem danych osobowych przekazywanych podczas składania zamówienia jest sklep Madzik.</p><h3>Jakie dane zbieramy</h3><p>Imię, nazwisko, adres e-mail, adres dostawy oraz dane niezbędne do realizacji płatności.</p><h3>Cel przetwarzania</h3><p>Dane wykorzystywane są wyłącznie do realizacji i obsługi zamówienia.</p><h3>Twoje prawa</h3><p>Masz prawo dostępu do swoich danych, ich poprawiania oraz usunięcia.</p>`,
+      cookies: `<h2>Polityka cookies</h2><p>Ta strona wykorzystuje pliki cookie do prawidłowego działania koszyka zakupowego.</p><h3>Cookies niezbędne</h3><p>Umożliwiają korzystanie z koszyka i procesu zakupowego. Nie można ich wyłączyć.</p>`,
+      zwroty: `<h2>Zwroty i reklamacje</h2><h3>Zwrot towaru</h3><p>Masz 14 dni od dnia otrzymania przesyłki na odstąpienie od umowy.</p><h3>Reklamacje</h3><p>Jeśli produkt jest wadliwy, skontaktuj się z nami mailowo.</p><h3>Zwrot płatności</h3><p>Środki zwracane są tym samym kanałem płatności.</p>`
+    };
+
+    function openModal(key) {
+      document.getElementById('modalContent').innerHTML = MODAL_CONTENT[key] || '';
+      document.getElementById('modalOverlay').classList.add('show');
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+    }
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+    function acceptCookies(all) {
+      document.cookie = `cookie_consent=${all ? 'all' : 'essential'}; max-age=31536000; path=/`;
+      document.getElementById('cookieBanner').classList.remove('show');
+    }
+    function checkCookieConsent() {
+      if (!getCookie('cookie_consent')) {
+        setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 600);
+      }
+    }
+
+    applyStoredTheme();
+    checkCookieConsent();
+    loadProducts();
+    updateCartCountUI();
+  </script>
+</body>
+</html>
