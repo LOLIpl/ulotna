@@ -169,28 +169,8 @@
       padding: 40px 20px;
     }
 
-    header {
-      text-align: center;
-      padding: 60px 20px 40px;
-    }
-
-    header h1 {
-      font-size: 64px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-4), var(--accent-5));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      color: var(--text-muted);
-      font-size: 16px;
-      letter-spacing: 6px;
-      text-transform: uppercase;
+    .content-spacer {
+      height: 48px;
     }
 
     .topbar-stack {
@@ -248,26 +228,30 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 12px 20px;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
     }
 
     .nav-brand {
+      grid-column: 2;
+      justify-self: center;
       background: transparent;
       border: none;
-      color: var(--text-soft);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
+      color: var(--accent-2);
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 3px;
       text-transform: uppercase;
       cursor: pointer;
-      padding: 8px 4px;
+      padding: 4px 10px;
       transition: color 0.25s;
     }
-    .nav-brand:hover { color: var(--accent-2); }
+    .nav-brand:hover { color: var(--accent-1); }
 
     .nav-actions {
+      grid-column: 3;
+      justify-self: end;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -1578,9 +1562,7 @@
   </div>
 
   <div class="content">
-    <header>
-      <h1>Ulotna</h1>
-    </header>
+    <div class="content-spacer"></div>
 
     <div id="tab-shop" class="tab-content active">
       <div class="toolbar">
@@ -2661,7 +2643,7 @@ out body 600;`;
 
     const MODAL_CONTENT = {
       regulamin: `<h2>Regulamin sklepu</h2><h3>1. Postanowienia ogólne</h3><p>Sklep internetowy Ulotna.qzz.io prowadzony jest w celu sprzedaży jajek, miodów. Złożenie zamówienia jest równoznaczne z akceptacją niniejszego regulaminu.</p><h3>2. Zamówienia</h3><p>Zamówienia składane są za pośrednictwem koszyka i formularza kasy. Umowę sprzedaży uważa się za zawartą z chwilą potwierdzenia zamówienia przez sklep.</p><h3>3. Ceny i płatności</h3><p>Wszystkie ceny podane są w złotych polskich i zawierają podatek VAT.</p><h3>4. Dostawa</h3><p>Zamówienia dostarczane są kurierem na wskazany adres lub do wybranego paczkomatu.</p><h3>5. Zwroty i reklamacje</h3><p>Klient może odstąpić od umowy w terminie 14 dni od otrzymania przesyłki.</p><h3>6. Postanowienia końcowe</h3><p>W sprawach nieuregulowanych zastosowanie mają przepisy Kodeksu cywilnego.</p>`,
-      prywatnosc: `<h2>Polityka prywatności</h2><p>Administratorem danych osobowych przekazywanych podczas składania zamówienia jest sklep Madzik.</p><h3>Jakie dane zbieramy</h3><p>Imię, nazwisko, adres e-mail, adres dostawy oraz dane niezbędne do realizacji płatności.</p><h3>Cel przetwarzania</h3><p>Dane wykorzystywane są wyłącznie do realizacji i obsługi zamówienia.</p><h3>Twoje prawa</h3><p>Masz prawo dostępu do swoich danych, ich poprawiania oraz usunięcia.</p>`,
+      prywatnosc: `<h2>Polityka prywatności</h2><p>Administratorem danych osobowych przekazywanych podczas składania zamówienia jest sklep Ulotna.</p><h3>Jakie dane zbieramy</h3><p>Imię, nazwisko, adres e-mail, adres dostawy oraz dane niezbędne do realizacji płatności.</p><h3>Cel przetwarzania</h3><p>Dane wykorzystywane są wyłącznie do realizacji i obsługi zamówienia.</p><h3>Twoje prawa</h3><p>Masz prawo dostępu do swoich danych, ich poprawiania oraz usunięcia.</p>`,
       cookies: `<h2>Polityka cookies</h2><p>Ta strona wykorzystuje pliki cookie do prawidłowego działania koszyka zakupowego.</p><h3>Cookies niezbędne</h3><p>Umożliwiają korzystanie z koszyka i procesu zakupowego. Nie można ich wyłączyć.</p>`,
       zwroty: `<h2>Zwroty i reklamacje</h2><h3>Zwrot towaru</h3><p>Masz 14 dni od dnia otrzymania przesyłki na odstąpienie od umowy.</p><h3>Reklamacje</h3><p>Jeśli produkt jest wadliwy, skontaktuj się z nami mailowo.</p><h3>Zwrot płatności</h3><p>Środki zwracane są tym samym kanałem płatności.</p>`
     };
