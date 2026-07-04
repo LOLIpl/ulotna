@@ -40,27 +40,27 @@
       --accent-3: #5c1f26;
       --accent-4: #c96b52;
       --accent-5: #8f3f34;
-      --bg: #ffffff;
-      --bg-card: #fdf8f6;
-      --bg-elevated: #ffffff;
-      --bg-footer: #f7ece8;
-      --border: #e6d3cd;
-      --border-row: #efe1db;
-      --border-footer: #ecdcd5;
+      --bg: #f2e7e2;
+      --bg-card: #ede0da;
+      --bg-elevated: #f5eae5;
+      --bg-footer: #e6d3cb;
+      --border: #d4b8ac;
+      --border-row: #ddc3b8;
+      --border-footer: #d0b2a5;
       --text: #2b1214;
-      --text-muted: #86595a;
-      --text-dim: #a9807f;
-      --text-faint: #c7a7a4;
+      --text-muted: #7c5350;
+      --text-dim: #9c7671;
+      --text-faint: #b6948d;
       --text-soft: #4a2624;
-      --text-subtle: #6e4340;
+      --text-subtle: #674038;
       --danger: #c0392b;
       --danger-light: #e0574a;
-      --accent-glow-10: rgba(162, 59, 71, 0.08);
-      --accent-glow-15: rgba(162, 59, 71, 0.12);
+      --accent-glow-10: rgba(162, 59, 71, 0.1);
+      --accent-glow-15: rgba(162, 59, 71, 0.15);
       --accent-glow-60: rgba(162, 59, 71, 0.5);
       --danger-glow-15: rgba(192, 57, 43, 0.12);
-      --nav-bg: rgba(255, 255, 255, 0.75);
-      --shadow-color: rgba(80, 50, 45, 0.15);
+      --nav-bg: rgba(242, 231, 226, 0.82);
+      --shadow-color: rgba(80, 50, 45, 0.2);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -193,10 +193,13 @@
       text-transform: uppercase;
     }
 
-    .site-nav {
+    .topbar-stack {
       position: sticky;
       top: 8px;
       z-index: 900;
+    }
+
+    .site-nav {
       background: var(--nav-bg);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
@@ -205,7 +208,8 @@
     .trust-bar {
       position: relative;
       z-index: 1;
-      background: var(--bg-card);
+      background: var(--nav-bg);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
     }
 
@@ -1360,44 +1364,46 @@
     <span class="bg-item"><img src="https://images.unsplash.com/photo-1596733430284-f743f0c6ac31?w=200&q=80" alt=""></span>
   </div>
 
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <button class="nav-brand" onclick="switchTab('shop')">Sklep</button>
-      <div class="nav-actions">
-        <button class="theme-toggle" onclick="toggleTheme()" title="Zmień motyw kolorystyczny">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <circle cx="12" cy="12" r="4.5"/>
-            <path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/>
-          </svg>
-        </button>
-        <button class="cart-button" onclick="switchTab('cart')" title="Koszyk">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-            <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
-            <path d="M2.5 3h2l2.3 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 7H6"/>
-          </svg>
-          <span class="cart-count" id="cartCount">0</span>
-        </button>
+  <div class="topbar-stack">
+    <nav class="site-nav">
+      <div class="nav-inner">
+        <button class="nav-brand" onclick="switchTab('shop')">Sklep</button>
+        <div class="nav-actions">
+          <button class="theme-toggle" onclick="toggleTheme()" title="Zmień motyw kolorystyczny">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="4.5"/>
+              <path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/>
+            </svg>
+          </button>
+          <button class="cart-button" onclick="switchTab('cart')" title="Koszyk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>
+              <path d="M2.5 3h2l2.3 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 7H6"/>
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
+          </button>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <div class="trust-bar">
-    <div class="trust-bar-inner">
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="15" height="10" rx="1.5"/><path d="M16 10h3.5l3 3.5V17h-6.5"/><circle cx="6" cy="19.5" r="1.6"/><circle cx="17.5" cy="19.5" r="1.6"/></svg>
-        <span>Darmowa dostawa od 150 zł</span>
-      </div>
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="18" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg>
-        <span>Bezpieczne płatności</span>
-      </div>
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-        <span>Wysyłka w 24h</span>
-      </div>
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
-        <span>14 dni na zwrot</span>
+    <div class="trust-bar">
+      <div class="trust-bar-inner">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="15" height="10" rx="1.5"/><path d="M16 10h3.5l3 3.5V17h-6.5"/><circle cx="6" cy="19.5" r="1.6"/><circle cx="17.5" cy="19.5" r="1.6"/></svg>
+          <span>Darmowa dostawa od 150 zł</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="18" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg>
+          <span>Bezpieczne płatności</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          <span>Wysyłka w 24h</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+          <span>14 dni na zwrot</span>
+        </div>
       </div>
     </div>
   </div>
