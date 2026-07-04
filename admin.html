@@ -1151,6 +1151,9 @@
         <table><thead><tr><th>Produkt</th><th>Ilość</th><th style="text-align:right">Cena</th><th style="text-align:right">Suma</th></tr></thead>
         <tbody>${productRows}</tbody>
         <tfoot><tr><td colspan="3" style="text-align:right;font-weight:700;color:var(--text)">Razem</td><td style="text-align:right;font-weight:800;color:var(--text);font-size:16px">${o.total.toFixed(2)} zł</td></tr></tfoot></table>
+        <div class="tracking-hint" style="margin-top:16px;padding:12px 14px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text-muted)">
+          Klient może samodzielnie sprawdzić status na stronie sklepu (ikona śledzenia w górnym menu → „Śledź zamówienie”), wpisując numer <strong style="color:var(--text)">${o.id}</strong> i e-mail <strong style="color:var(--text)">${o.customer.email}</strong>. Status widoczny tam to ta sama kolumna, którą zmieniasz poniżej.
+        </div>
         <div class="form-group" style="margin-top:20px">
           <label>Zmień status</label>
           <select id="orderStatusSelect">${Object.entries(STATUS_MAP).map(([k, v]) => `<option value="${k}" ${k === o.status ? 'selected' : ''}>${v}</option>`).join('')}</select>

@@ -288,6 +288,21 @@
     .theme-toggle svg { width: 18px; height: 18px; }
     .theme-toggle:hover { border-color: var(--accent-1); color: var(--accent-2); }
 
+    .track-button {
+      width: 38px; height: 38px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+    }
+    .track-button svg { width: 18px; height: 18px; }
+    .track-button:hover { border-color: var(--accent-1); color: var(--accent-2); }
+
     .cart-button {
       position: relative;
       display: flex;
@@ -965,21 +980,173 @@
       letter-spacing: 1px;
     }
 
-    .new-order-btn {
+    .confirmation-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
       margin-top: 26px;
-      padding: 12px 32px;
-      border: 1px solid var(--text-faint);
-      background: transparent;
-      color: var(--text-soft);
-      border-radius: 6px;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 13px;
-      transition: all 0.3s;
+      flex-wrap: wrap;
     }
 
-    .new-order-btn:hover { border-color: var(--accent-1); color: var(--accent-2); }
+    /* ─── Śledzenie zamówienia ─── */
+    .tracking-wrap {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 20px 0 60px;
+    }
+
+    .tracking-title {
+      font-size: 26px;
+      text-align: center;
+      color: var(--accent-2);
+      margin-bottom: 8px;
+    }
+
+    .tracking-sub {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .tracking-form .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 560px) {
+      .tracking-form .form-grid { grid-template-columns: 1fr; }
+    }
+
+    .tracking-loading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      padding: 30px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .tracking-error {
+      margin-top: 20px;
+      padding: 14px 18px;
+      border: 1px solid var(--danger);
+      background: var(--danger-glow-15);
+      color: var(--danger-light);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .tracking-order-summary {
+      margin-top: 26px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-card);
+    }
+
+    .tracking-order-id {
+      font-weight: 700;
+      color: var(--accent-2);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .tracking-current-status {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+    .tracking-current-status strong { color: var(--text); }
+
+    .tracking-pending-note {
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 14px 16px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-row);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tracking-timeline {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 26px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tracking-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+      width: 84px;
+      text-align: center;
+    }
+
+    .tracking-step-icon {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      flex: none;
+      transition: all 0.3s;
+    }
+    .tracking-step-icon svg { width: 18px; height: 18px; }
+
+    .tracking-step.done .tracking-step-icon {
+      background: var(--accent-1);
+      border-color: var(--accent-1);
+      color: var(--bg);
+    }
+
+    .tracking-step.next .tracking-step-icon {
+      border-color: var(--accent-1);
+      color: var(--accent-2);
+    }
+
+    .tracking-step-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.3;
+    }
+    .tracking-step.done .tracking-step-label { color: var(--text-soft); font-weight: 600; }
+
+    .tracking-step-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin-top: 19px;
+      min-width: 16px;
+    }
+    .tracking-step-line.done { background: var(--accent-1); }
+
+    .tracking-cancelled-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border: 1px solid var(--danger);
+      background: var(--danger-glow-15);
+      color: var(--danger-light);
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .tracking-cancelled-banner svg { width: 22px; height: 22px; flex: none; }
+
+    .tracking-details .checkout-summary {
+      border: none;
+      padding: 0;
+    }
 
     .field-error {
       color: var(--danger-light);
@@ -1352,27 +1519,36 @@
   <div class="golden-bar"></div>
 
   <div class="background-graphics">
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1548550023-2bdb619c57f6?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=200&q=80" alt=""></span>
-    <span class="bg-item"><img src="https://images.unsplash.com/photo-1596733430284-f743f0c6ac31?w=200&q=80" alt=""></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><ellipse cx="12" cy="13" rx="7" ry="9"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l3 3-3 3-3-3 3-3z"/><path d="M12 8l3 3-3 3-3-3 3-3z"/><path d="M12 14l3 3-3 3-3-3 3-3z"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><ellipse cx="12" cy="9" rx="5" ry="4"/><path d="M8.5 12.5C7 15 7 19 9 21h6c2-2 2-6 0.5-8.5"/><path d="M9 9h6"/><path d="M7 9c-2-1-2-4 0-5M17 9c2-1 2-4 0-5"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 20l4-13a3 3 0 0 1 3-2h2a3 3 0 0 1 3 2l4 13"/><path d="M6 20h12"/><path d="M9 14h6"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3c2 3 5 6 5 10a5 5 0 0 1-10 0c0-4 3-7 5-10z"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 4h10l-1.5 15.5a1.5 1.5 0 0 1-1.5 1.5h-4a1.5 1.5 0 0 1-1.5-1.5L7 4z"/><path d="M8.5 9h7"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3c3 2 6 5 6 9a6 6 0 0 1-12 0c0-4 3-7 6-9z"/><path d="M12 12v6"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 13c3-6 13-6 16 0"/><path d="M4 13c0 4 3.5 7 8 7s8-3 8-7"/><path d="M9 13v4M12 13v5M15 13v4"/></svg></span>
+    <span class="bg-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 21V10l8-6 8 6v11"/><path d="M9 21v-7h6v7"/></svg></span>
   </div>
+
+
 
   <div class="topbar-stack">
     <nav class="site-nav">
       <div class="nav-inner">
-        <button class="nav-brand" onclick="switchTab('shop')">Sklep</button>
+        <button class="nav-brand" onclick="switchTab('shop')">Ulotna</button>
         <div class="nav-actions">
           <button class="theme-toggle" onclick="toggleTheme()" title="Zmień motyw kolorystyczny">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
               <circle cx="12" cy="12" r="4.5"/>
               <path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/>
+            </svg>
+          </button>
+          <button class="track-button" onclick="switchTab('tracking')" title="Śledź zamówienie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 8.5l8-4.5 8 4.5v7L12 20l-8-4.5v-7z"/>
+              <path d="M4 8.5l8 4.5 8-4.5"/>
+              <path d="M12 13v7"/>
             </svg>
           </button>
           <button class="cart-button" onclick="switchTab('cart')" title="Koszyk">
@@ -1411,7 +1587,6 @@
   <div class="content">
     <header>
       <h1>Ulotna</h1>
-      <p>Jajka i Miód</p>
     </header>
 
     <div id="tab-shop" class="tab-content active">
@@ -1442,6 +1617,10 @@
 
     <div id="tab-checkout" class="tab-content">
       <div id="checkoutContainer"></div>
+    </div>
+
+    <div id="tab-tracking" class="tab-content">
+      <div id="trackingContainer"></div>
     </div>
   </div>
 
@@ -1547,6 +1726,7 @@
       requestAnimationFrame(() => { panel.style.animation = 'tabFade 0.35s ease both'; });
       if (name === 'cart') loadCart();
       if (name === 'checkout') loadCheckout();
+      if (name === 'tracking') renderTrackingForm();
     }
 
     function toggleCategoryDropdown(evt) {
@@ -2314,7 +2494,174 @@ out body 600;`;
           <p>Kwota: ${order.total.toFixed(2)} zł &bull; Płatność: ${order.paymentMethod}</p>
           <p>${deliveryLine}</p>
           <div class="order-id">Nr zamówienia: ${order.id}</div>
-          <div><button class="new-order-btn" onclick="switchTab('shop')">Wróć do sklepu</button></div>
+          <div class="confirmation-actions">
+            <button class="continue-shopping-btn" onclick="switchTab('shop')">Wróć do sklepu</button>
+            <button class="pay-btn" style="width:auto" onclick="goToTracking('${order.id}', '${order.customer.email}')">Śledź to zamówienie</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ─── Śledzenie zamówienia ──────────────────────────────────────────
+    // Status pochodzi z tabeli `orders` w Supabase — to ta sama kolumna
+    // `status`, którą zmienia się w panelu administracyjnym (admin.html).
+    // Zmiana statusu przez sprzedawcę w adminie jest więc od razu widoczna
+    // tutaj, po ponownym sprawdzeniu numeru zamówienia.
+
+    const TRACKING_STATUS_MAP = {
+      oczekuje_na_platnosc: 'Oczekuje na płatność',
+      oplacone: 'Opłacone',
+      test_oplacone: 'Opłacone (test)',
+      przyjete: 'Przyjęte do realizacji',
+      przygotowanie: 'W przygotowaniu',
+      wyslane: 'Wysłane',
+      dostarczone: 'Dostarczone',
+      anulowane: 'Anulowane',
+      zwrócone: 'Zwrócone'
+    };
+
+    const TRACKING_STEPS = [
+      { key: 'oplacone', label: 'Opłacone', icon: '<path d="M4 8h16M4 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z"/><path d="M7 15h4"/>' },
+      { key: 'przyjete', label: 'Przyjęte', icon: '<path d="M4 8.5l8-4.5 8 4.5-8 4.5-8-4.5z"/><path d="M4 8.5v7l8 4.5 8-4.5v-7"/>' },
+      { key: 'przygotowanie', label: 'W przygotowaniu', icon: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>' },
+      { key: 'wyslane', label: 'Wysłane', icon: '<path d="M3 7h10v9H3z"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.5"/><circle cx="16.5" cy="18" r="1.5"/>' },
+      { key: 'dostarczone', label: 'Dostarczone', icon: '<path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-7h6v7"/>' }
+    ];
+    // status w bazie -> na którym kroku timeline'u go pokazać
+    const STATUS_TO_STEP_INDEX = {
+      oczekuje_na_platnosc: -1,
+      oplacone: 0,
+      test_oplacone: 0,
+      przyjete: 1,
+      przygotowanie: 2,
+      wyslane: 3,
+      dostarczone: 4
+    };
+
+    function renderTrackingForm(prefillId, prefillEmail) {
+      const container = document.getElementById('trackingContainer');
+      container.innerHTML = `
+        <div class="tracking-wrap">
+          <h2 class="tracking-title">Śledź swoje zamówienie</h2>
+          <p class="tracking-sub">Wpisz numer zamówienia oraz adres e-mail podany przy zakupie, aby sprawdzić aktualny status.</p>
+          <form class="tracking-form" onsubmit="return submitTracking(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Numer zamówienia</label>
+                <input type="text" id="trackOrderId" required placeholder="np. XUMV8YXP" value="${prefillId ? prefillId : ''}">
+              </div>
+              <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" id="trackEmail" required placeholder="twoj@email.pl" value="${prefillEmail ? prefillEmail : ''}">
+              </div>
+            </div>
+            <button type="submit" class="pay-btn" id="trackSubmitBtn">Sprawdź status</button>
+          </form>
+          <div id="trackingResult"></div>
+        </div>
+      `;
+      if (prefillId && prefillEmail) {
+        performTracking(prefillId, prefillEmail);
+      }
+    }
+
+    function goToTracking(orderId, email) {
+      switchTab('tracking');
+      renderTrackingForm(orderId, email);
+    }
+
+    function submitTracking(evt) {
+      evt.preventDefault();
+      const orderId = document.getElementById('trackOrderId').value.trim();
+      const email = document.getElementById('trackEmail').value.trim();
+      if (!orderId || !email) return false;
+      performTracking(orderId, email);
+      return false;
+    }
+
+    async function performTracking(orderId, email) {
+      const resultEl = document.getElementById('trackingResult');
+      const btn = document.getElementById('trackSubmitBtn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Sprawdzanie...'; }
+      resultEl.innerHTML = `<div class="tracking-loading"><span class="locker-spinner"></span> Sprawdzanie zamówienia...</div>`;
+      try {
+        const { data, error } = await supabaseClient.rpc('track_order', {
+          p_order_id: orderId.toUpperCase(),
+          p_email: email
+        });
+        if (error) throw error;
+        if (!data) {
+          resultEl.innerHTML = `<div class="tracking-error">Nie znaleziono zamówienia z podanym numerem i adresem e-mail. Sprawdź, czy dane są wpisane poprawnie.</div>`;
+          return;
+        }
+        renderTrackingResult(data);
+      } catch (e) {
+        console.error('Tracking error:', e);
+        resultEl.innerHTML = `<div class="tracking-error">Nie udało się sprawdzić statusu. Spróbuj ponownie za chwilę.</div>`;
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Sprawdź status'; }
+      }
+    }
+
+    function renderTrackingResult(order) {
+      const resultEl = document.getElementById('trackingResult');
+      const status = order.status || 'oczekuje_na_platnosc';
+      const statusLabel = TRACKING_STATUS_MAP[status] || status;
+
+      if (status === 'anulowane' || status === 'zwrócone') {
+        resultEl.innerHTML = `
+          <div class="tracking-order-summary">
+            <div class="tracking-order-id">Zamówienie ${order.id}</div>
+            <div class="tracking-cancelled-banner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+              ${statusLabel}
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const currentStepIndex = STATUS_TO_STEP_INDEX[status] ?? -1;
+      const timelineHtml = TRACKING_STEPS.map((step, i) => {
+        const state = i <= currentStepIndex ? 'done' : (i === currentStepIndex + 1 ? 'next' : '');
+        return `
+          <div class="tracking-step ${state}">
+            <div class="tracking-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">${step.icon}</svg></div>
+            <div class="tracking-step-label">${step.label}</div>
+          </div>
+          ${i < TRACKING_STEPS.length - 1 ? `<div class="tracking-step-line ${i < currentStepIndex ? 'done' : ''}"></div>` : ''}
+        `;
+      }).join('');
+
+      const itemsHtml = (order.items || []).map(i => `
+        <div class="checkout-summary-row">
+          <span>${i.name} × ${i.quantity}</span>
+          <span>${((i.sale_price && i.sale_price < i.cost ? i.sale_price : i.cost) * i.quantity).toFixed(2)} zł</span>
+        </div>
+      `).join('');
+
+      const deliveryLine = order.delivery_method === 'paczkomat' && order.locker
+        ? `Paczkomat ${order.locker.code || ''} ${order.locker.address ? '— ' + order.locker.address : ''}`
+        : 'Kurier na adres';
+
+      resultEl.innerHTML = `
+        <div class="tracking-order-summary">
+          <div class="tracking-order-id">Zamówienie ${order.id}</div>
+          <div class="tracking-current-status">Aktualny status: <strong>${statusLabel}</strong></div>
+
+          ${status === 'oczekuje_na_platnosc' ? `
+            <div class="tracking-pending-note">Czekamy na potwierdzenie płatności. Status pojawi się tutaj automatycznie po jej zaksięgowaniu.</div>
+          ` : `
+            <div class="tracking-timeline">${timelineHtml}</div>
+          `}
+
+          <div class="tracking-details">
+            <div class="checkout-summary">
+              ${itemsHtml}
+              <div class="checkout-summary-row"><span>Dostawa</span><span>${deliveryLine}</span></div>
+              <div class="checkout-summary-total"><span>Razem</span><span>${(order.total || 0).toFixed(2)} zł</span></div>
+            </div>
+          </div>
         </div>
       `;
     }
