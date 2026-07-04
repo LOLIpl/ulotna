@@ -1442,8 +1442,8 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-col">
-        <div class="footer-heading">Madzik</div>
-        <p class="footer-text">Świeże jajka prosto z wolnego wybiegu i naturalny miód od lokalnych pszczelarzy — prosto z natury na Twój stół.</p>
+        <div class="footer-heading">Ulotna.qzz.io</div>
+        <p class="footer-text">Świeże jajka prosto z wolnego wybiegu i naturalny miód</p>
       </div>
       <div class="footer-col">
         <div class="footer-heading">Informacje</div>
@@ -1454,11 +1454,11 @@
       </div>
       <div class="footer-col">
         <div class="footer-heading">Kontakt</div>
-        <p class="footer-text">sklep@madzik.pl<br>+48 600 000 000<br>ul. Rzemieślnicza 12, 61-001 Poznań</p>
+        <p class="footer-text">sklep@tvsuper.qzz.io<br>+48 600 000 000<br>ul. dadasdadaddasdsa</p>
         <p class="footer-text">NIP: 000-000-00-00</p>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 Madzik. Wszystkie prawa zastrzeżone.</div>
+    <div class="footer-bottom">© 2026 Ulotna. Wszystkie prawa zastrzeżone.</div>
   </footer>
 
   <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
@@ -2260,11 +2260,14 @@ out body 600;`;
         }).catch(err => console.log('Webhook offline:', err));
 
         // Alternatywnie: zapisz do tabeli notifications w Supabase (działa zawsze)
+        // Uwaga: obiekt zwracany przez Supabase (from().insert()) to "thenable",
+        // nie pełny Promise — ma metodę .then(), ale NIE ma .catch(). Użycie
+        // .catch() na nim wywala błąd i przerywa całe składanie zamówienia.
         supabaseClient.from('order_notifications').insert({
           order_id: orderId,
           payload: orderPayload,
           sent: false
-        }).catch(() => {});
+        }).then(() => {}, () => {});
 
         const order = {
           id: orderId,
@@ -2311,7 +2314,7 @@ out body 600;`;
     }
 
     const MODAL_CONTENT = {
-      regulamin: `<h2>Regulamin sklepu</h2><h3>1. Postanowienia ogólne</h3><p>Sklep internetowy Madzik prowadzony jest w celu sprzedaży ręcznie wykonanych pisanek, miodów oraz obrazów. Złożenie zamówienia jest równoznaczne z akceptacją niniejszego regulaminu.</p><h3>2. Zamówienia</h3><p>Zamówienia składane są za pośrednictwem koszyka i formularza kasy. Umowę sprzedaży uważa się za zawartą z chwilą potwierdzenia zamówienia przez sklep.</p><h3>3. Ceny i płatności</h3><p>Wszystkie ceny podane są w złotych polskich i zawierają podatek VAT.</p><h3>4. Dostawa</h3><p>Zamówienia dostarczane są kurierem na wskazany adres lub do wybranego paczkomatu.</p><h3>5. Zwroty i reklamacje</h3><p>Klient może odstąpić od umowy w terminie 14 dni od otrzymania przesyłki.</p><h3>6. Postanowienia końcowe</h3><p>W sprawach nieuregulowanych zastosowanie mają przepisy Kodeksu cywilnego.</p>`,
+      regulamin: `<h2>Regulamin sklepu</h2><h3>1. Postanowienia ogólne</h3><p>Sklep internetowy Ulotna.qzz.io prowadzony jest w celu sprzedaży jajek, miodów. Złożenie zamówienia jest równoznaczne z akceptacją niniejszego regulaminu.</p><h3>2. Zamówienia</h3><p>Zamówienia składane są za pośrednictwem koszyka i formularza kasy. Umowę sprzedaży uważa się za zawartą z chwilą potwierdzenia zamówienia przez sklep.</p><h3>3. Ceny i płatności</h3><p>Wszystkie ceny podane są w złotych polskich i zawierają podatek VAT.</p><h3>4. Dostawa</h3><p>Zamówienia dostarczane są kurierem na wskazany adres lub do wybranego paczkomatu.</p><h3>5. Zwroty i reklamacje</h3><p>Klient może odstąpić od umowy w terminie 14 dni od otrzymania przesyłki.</p><h3>6. Postanowienia końcowe</h3><p>W sprawach nieuregulowanych zastosowanie mają przepisy Kodeksu cywilnego.</p>`,
       prywatnosc: `<h2>Polityka prywatności</h2><p>Administratorem danych osobowych przekazywanych podczas składania zamówienia jest sklep Madzik.</p><h3>Jakie dane zbieramy</h3><p>Imię, nazwisko, adres e-mail, adres dostawy oraz dane niezbędne do realizacji płatności.</p><h3>Cel przetwarzania</h3><p>Dane wykorzystywane są wyłącznie do realizacji i obsługi zamówienia.</p><h3>Twoje prawa</h3><p>Masz prawo dostępu do swoich danych, ich poprawiania oraz usunięcia.</p>`,
       cookies: `<h2>Polityka cookies</h2><p>Ta strona wykorzystuje pliki cookie do prawidłowego działania koszyka zakupowego.</p><h3>Cookies niezbędne</h3><p>Umożliwiają korzystanie z koszyka i procesu zakupowego. Nie można ich wyłączyć.</p>`,
       zwroty: `<h2>Zwroty i reklamacje</h2><h3>Zwrot towaru</h3><p>Masz 14 dni od dnia otrzymania przesyłki na odstąpienie od umowy.</p><h3>Reklamacje</h3><p>Jeśli produkt jest wadliwy, skontaktuj się z nami mailowo.</p><h3>Zwrot płatności</h3><p>Środki zwracane są tym samym kanałem płatności.</p>`
