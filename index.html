@@ -435,6 +435,10 @@
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s;
       animation: fadeInUp 0.5s ease both;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      cursor: pointer;
     }
 
     .product-card:hover {
@@ -480,6 +484,9 @@
 
     .product-info {
       padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
 
     .product-category {
@@ -525,7 +532,7 @@
     .add-btn {
       width: 100%;
       padding: 12px;
-      margin-top: 12px;
+      margin-top: auto;
       border: 1px solid var(--accent-1);
       background: transparent;
       color: var(--accent-2);
@@ -541,6 +548,76 @@
     .add-btn:hover {
       background: var(--accent-1);
       color: var(--bg);
+    }
+
+    /* ─── Strona produktu ─── */
+    .product-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-bottom: 60px;
+    }
+
+    .back-to-shop {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 0;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-to-shop svg { width: 16px; height: 16px; }
+    .back-to-shop:hover { color: var(--accent-2); }
+
+    .product-page-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .product-page-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    .product-page-image {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    .product-page-image img {
+      width: 100%;
+      height: 440px;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 700px) {
+      .product-page-image img { height: 300px; }
+    }
+
+    .product-page-name {
+      font-size: 32px;
+      font-weight: 900;
+      margin: 6px 0 14px;
+      line-height: 1.2;
+    }
+
+    .product-page-cost {
+      margin: 16px 0 24px;
+    }
+
+    .product-page-addbtn {
+      width: auto;
+      padding: 14px 40px;
+      margin-top: 0;
     }
 
     .cart-empty {
@@ -1597,6 +1674,10 @@
     <div id="tab-tracking" class="tab-content">
       <div id="trackingContainer"></div>
     </div>
+
+    <div id="tab-product" class="tab-content">
+      <div id="productPageContainer"></div>
+    </div>
   </div>
 
   <footer class="site-footer">
@@ -1665,6 +1746,33 @@
     // PRODUKTY — ładowanie z Supabase
     // ============================================================
     let allProducts = [];
+    let productSlugMap = {};   // id -> slug
+    let slugToProduct = {};    // slug -> product
+
+    function slugify(text) {
+      const diacritics = { 'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z' };
+      return String(text)
+        .toLowerCase()
+        .split('').map(ch => diacritics[ch] || ch).join('')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'produkt';
+    }
+
+    function rebuildProductSlugs() {
+      const counts = {};
+      allProducts.forEach(p => {
+        const base = slugify(p.name);
+        counts[base] = (counts[base] || 0) + 1;
+      });
+      productSlugMap = {};
+      slugToProduct = {};
+      allProducts.forEach(p => {
+        const base = slugify(p.name);
+        const slug = counts[base] > 1 ? `${base}-${p.id}` : base;
+        productSlugMap[p.id] = slug;
+        slugToProduct[slug] = p;
+      });
+    }
     let currentCategory = '';
     let currentSearch = '';
     let currentSort = '';
@@ -1694,6 +1802,9 @@
     }
 
     function switchTab(name) {
+      if (name !== 'product' && window.location.hash.startsWith('#/produkt/')) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       const panel = document.getElementById(`tab-${name}`);
       panel.classList.add('active');
@@ -1702,6 +1813,76 @@
       if (name === 'cart') loadCart();
       if (name === 'checkout') loadCheckout();
       if (name === 'tracking') renderTrackingForm();
+    }
+
+    // ─── Strona produktu (URL oparty o slug z nazwy, np. #/produkt/jajka-wiejskie) ───
+
+    function goToProduct(slug) {
+      window.location.hash = `#/produkt/${slug}`;
+    }
+
+    function backToShop() {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+      switchTab('shop');
+    }
+
+    function handleRouteFromHash() {
+      const match = window.location.hash.match(/^#\/produkt\/(.+)$/);
+      if (!match) return false;
+      const slug = decodeURIComponent(match[1]);
+      const product = slugToProduct[slug];
+      if (!product) return false;
+      renderProductPage(product);
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      const panel = document.getElementById('tab-product');
+      panel.classList.add('active');
+      panel.style.animation = 'none';
+      requestAnimationFrame(() => { panel.style.animation = 'tabFade 0.35s ease both'; });
+      return true;
+    }
+
+    window.addEventListener('hashchange', () => {
+      if (!handleRouteFromHash()) {
+        switchTab('shop');
+      }
+    });
+
+    function renderProductPage(p) {
+      const container = document.getElementById('productPageContainer');
+      const outOfStock = p.stock === 0;
+      const lowStock = p.stock > 0 && p.stock <= 3;
+      const onSale = p.sale_price && p.sale_price < p.cost;
+      const badge = outOfStock
+        ? `<span class="stock-badge out">Wyprzedane</span>`
+        : lowStock
+          ? `<span class="stock-badge low">Ostatnie ${p.stock} szt.</span>`
+          : onSale
+            ? `<span class="stock-badge low" style="background:rgba(225,112,85,0.15);color:var(--danger-light);border-color:var(--danger)">Promocja</span>`
+            : '';
+      const priceDisplay = onSale
+        ? `<span class="price-old">${p.cost.toFixed(2)} zł</span><span class="price-new">${p.sale_price.toFixed(2)} zł</span>`
+        : `${p.cost.toFixed(2)} <span>zł</span>`;
+
+      container.innerHTML = `
+        <div class="product-page">
+          <button class="back-to-shop" onclick="backToShop()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>
+            Wróć do sklepu
+          </button>
+          <div class="product-page-grid">
+            <div class="product-page-image">
+              <img src="${p.image}" alt="${p.name}">
+            </div>
+            <div class="product-page-info">
+              <div class="product-category">${p.category}</div>
+              <h1 class="product-page-name">${p.name}</h1>
+              ${badge}
+              <div class="product-cost product-page-cost">${priceDisplay}</div>
+              <button class="add-btn ripple product-page-addbtn" onclick="addToCart(${p.id}, event)" ${outOfStock ? 'disabled' : ''}>${outOfStock ? 'Niedostępny' : 'Dodaj do koszyka'}</button>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     function toggleCategoryDropdown(evt) {
@@ -1805,7 +1986,7 @@
           ? `<span class="price-old">${p.cost.toFixed(2)} zł</span><span class="price-new">${p.sale_price.toFixed(2)} zł</span>`
           : `${p.cost.toFixed(2)} <span>zł</span>`;
         return `
-        <div class="product-card ${outOfStock ? 'out-of-stock' : ''}" style="animation-delay:${Math.min(idx * 0.05, 0.4)}s">
+        <div class="product-card ${outOfStock ? 'out-of-stock' : ''}" style="animation-delay:${Math.min(idx * 0.05, 0.4)}s" onclick="goToProduct('${productSlugMap[p.id]}')">
           <div class="product-image-wrap">
             <img class="product-image" src="${p.image}" alt="${p.name}" loading="lazy">
           </div>
@@ -1814,7 +1995,7 @@
             <div class="product-name">${p.name}</div>
             ${badge}
             <div class="product-cost">${priceDisplay}</div>
-            <button class="add-btn ripple" onclick="addToCart(${p.id}, event)" ${outOfStock ? 'disabled' : ''}>${outOfStock ? 'Niedostępny' : 'Dodaj do koszyka'}</button>
+            <button class="add-btn ripple" onclick="event.stopPropagation(); addToCart(${p.id}, event)" ${outOfStock ? 'disabled' : ''}>${outOfStock ? 'Niedostępny' : 'Dodaj do koszyka'}</button>
           </div>
         </div>
       `;
@@ -1844,9 +2025,11 @@
         allProducts = [];
         showNotification('Nie udało się załadować produktów z Supabase.', 'error');
       }
+      rebuildProductSlugs();
       renderCategoryDropdown();
       renderSortDropdown();
       renderProducts();
+      handleRouteFromHash();
     }
 
     function toggleTheme() {
