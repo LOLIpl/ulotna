@@ -1010,14 +1010,7 @@
     }
 
     .tracking-form .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
       margin-bottom: 16px;
-    }
-
-    @media (max-width: 560px) {
-      .tracking-form .form-grid { grid-template-columns: 1fr; }
     }
 
     .tracking-loading {
@@ -2546,11 +2539,11 @@ out body 600;`;
           <p class="tracking-sub">Wpisz numer zamówienia oraz adres e-mail podany przy zakupie, aby sprawdzić aktualny status.</p>
           <form class="tracking-form" onsubmit="return submitTracking(event)">
             <div class="form-grid">
-              <div class="form-group">
+              <div class="form-field">
                 <label>Numer zamówienia</label>
                 <input type="text" id="trackOrderId" required placeholder="np. XUMV8YXP" value="${prefillId ? prefillId : ''}">
               </div>
-              <div class="form-group">
+              <div class="form-field">
                 <label>E-mail</label>
                 <input type="email" id="trackEmail" required placeholder="twoj@email.pl" value="${prefillEmail ? prefillEmail : ''}">
               </div>
