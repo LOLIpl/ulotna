@@ -1321,7 +1321,23 @@
       display: flex;
       gap: 10px;
     }
-    .account-claim-row input { flex: 1; }
+    .account-claim-row input {
+      flex: 1;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .account-claim-row input:focus {
+      outline: none;
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 3px var(--accent-glow-15);
+    }
 
     .account-claim-row .continue-shopping-btn { flex: none; }
 
